@@ -16,5 +16,6 @@ public class WorkTimeActivity extends AppCompatActivity {
 		toolbar.setLogo(R.drawable.hourglass32);
 
 		setSupportActionBar(toolbar);
+
 	}
 }

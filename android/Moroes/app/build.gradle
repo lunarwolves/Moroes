@@ -41,4 +41,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/baidumapapi_v3_5_0.jar')
 }
