@@ -13,8 +13,8 @@ public interface Constant {
 	String DB_NAME = "db.moroes";
 	String TABLE_NAME_LOCATION = "location";
 
-	int DEFAULT_DETECT_DISTANCE = 20;
+	int DEFAULT_DETECT_DISTANCE = 100;
 
-	double SCOPE_LATITUDE = 0.0d;
-	double SCOPE_LONGTITUDE = 0.0d;
+	double SCOPE_LATITUDE = 41.728767d;
+	double SCOPE_LONGTITUDE = 123.453747d;
 }

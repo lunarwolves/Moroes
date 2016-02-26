@@ -8,9 +8,9 @@ import rui.com.inst.Constant;
 /**
  *
  */
-public class LocationChangeDBHelper extends SQLiteOpenHelper {
+public class LocationTimeDBHelper extends SQLiteOpenHelper {
 
-	public LocationChangeDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+	public LocationTimeDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
 		super(context, name, factory, version);
 	}
 

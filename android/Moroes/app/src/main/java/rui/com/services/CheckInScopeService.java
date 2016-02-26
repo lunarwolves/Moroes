@@ -8,10 +8,11 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.IBinder;
+import android.util.Log;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClientOption;
-import rui.com.db.LocationChangeDBHelper;
+import rui.com.db.LocationTimeDBHelper;
 import rui.com.inst.Constant;
 import rui.com.location.LocationService;
 import rui.com.moroes.MoroesApplication;
@@ -66,6 +67,8 @@ public class CheckInScopeService extends Service implements Constant {
 		@Override
 		public void onReceiveLocation(BDLocation location) {
 
+			Log.i("CheckInScopeService", "Receive location data.");
+
 			if (null != location && location.getLocType() != BDLocation.TypeServerError) {
 				float[] distance = new float[1];
 				Location.distanceBetween(SCOPE_LATITUDE, SCOPE_LONGTITUDE, location.getLatitude(), location.getLongitude(),
@@ -109,7 +112,7 @@ public class CheckInScopeService extends Service implements Constant {
 	}
 
 	private void writeToSQLite(int status) {
-		LocationChangeDBHelper helper = new LocationChangeDBHelper(this, DB_NAME, null, 1);
+		LocationTimeDBHelper helper = new LocationTimeDBHelper(this, DB_NAME, null, 1);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		db.beginTransaction();
 
@@ -118,6 +121,9 @@ public class CheckInScopeService extends Service implements Constant {
 		db.insert(TABLE_NAME_LOCATION, null, values);
 
 		db.setTransactionSuccessful();
+		db.close();
+
+		((MoroesApplication) getApplication()).mVibrator.vibrate(1000L);
 	}
 
 	private void recordScopeInfo() {
@@ -128,6 +134,6 @@ public class CheckInScopeService extends Service implements Constant {
 		editor.putLong(DATA_LAST_IN_SCOPE, lastInScopeTime);
 		editor.putLong(DATA_LAST_OUT_SCOPE, lastOutScopeTime);
 
-		editor.commit();
+		editor.apply();
 	}
 }
