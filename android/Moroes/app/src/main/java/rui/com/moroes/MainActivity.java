@@ -2,15 +2,19 @@ package rui.com.moroes;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import org.joda.time.LocalDateTime;
+import rui.com.db.LocationTimeDBHelper;
 import rui.com.inst.Constant;
 import rui.com.services.CheckInScopeService;
 
@@ -24,20 +28,14 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		initDB();
 		serviceIntent = new Intent(this, CheckInScopeService.class);
 		startService(serviceIntent);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
 
-//		toolbar.setLogo(R.drawable.hourglass32);
-
 		setSupportActionBar(toolbar);
 		toolbar.setOnMenuItemClickListener(onMenuItemClick);
-//
-//		Intent intent = new Intent(this, MySettingActivity.class);
-//		startActivity(intent);
-
 	}
 
 	@Override
@@ -79,6 +77,25 @@ public class MainActivity extends AppCompatActivity {
 		fragment = new WorkTimeFragment();
 		transaction.replace(R.id.id_content, fragment);
 		transaction.commit();
+	}
+
+	public void initDB() {
+		LocationTimeDBHelper helper = LocationTimeDBHelper.instance(getApplicationContext());
+
+		SQLiteDatabase db = helper.getWritableDatabase();
+		db.beginTransaction();
+
+		ContentValues values = new ContentValues();
+		values.put("status", 0);
+
+		LocalDateTime localDateTime = new LocalDateTime(2016, 3, 2, 7, 0, 0, 0);
+
+		values.put("changedTime", localDateTime.toDateTime().getMillis());
+		db.insert(Constant.TABLE_NAME_LOCATION, null, values);
+
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		db.close();
 	}
 
 	@Override

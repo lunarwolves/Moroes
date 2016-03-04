@@ -15,12 +15,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/textView"/>
+                android:id="@+id/show_start_work_time"/>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/textView2"/>
+                android:id="@+id/show_stop_work_time"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/show_work_time_today"/>
     </LinearLayout>
 </FrameLayout>

@@ -66,4 +66,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="work_time">Work Time</string>
+    <string name="time_rate_set_title">当月工时比例(大于1)</string>
 </resources>

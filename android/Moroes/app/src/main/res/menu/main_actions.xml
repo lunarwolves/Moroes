@@ -12,5 +12,6 @@
     <item
             android:id="@+id/action_work_time"
             android:icon="@drawable/calendar_48"
-            android:title="@string/work_time"/>
+            android:title="@string/work_time"
+            app:showAsAction="ifRoom"/>
 </menu>

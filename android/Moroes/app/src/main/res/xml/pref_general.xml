@@ -27,7 +27,8 @@
             android:inputType="numberDecimal"
             android:capitalize="words"
             android:singleLine="true"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:dialogTitle="@string/time_rate_set_title"/>
 
     <SwitchPreference
             android:key="vibrate_to tell_scope"

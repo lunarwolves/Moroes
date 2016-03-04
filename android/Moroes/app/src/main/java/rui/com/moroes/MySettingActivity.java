@@ -47,6 +47,11 @@ public class MySettingActivity extends AppCompatActivity {
 			}
 			return super.onOptionsItemSelected(item);
 		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+		}
 	}
 
 	private static void bindPreferenceSummaryToValue(Preference preference) {
@@ -60,6 +65,24 @@ public class MySettingActivity extends AppCompatActivity {
 						.getDefaultSharedPreferences(preference.getContext())
 						.getString(preference.getKey(), ""));
 	}
+
+	private static Preference.OnPreferenceChangeListener sConfirmWorkTimeRate = new Preference.OnPreferenceChangeListener() {
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object value) {
+			String rate = String.valueOf(value);
+			double drate = Double.parseDouble(rate);
+			if (drate < 1.0 || drate > 1.5) {
+				if (preference instanceof EditTextPreference) {
+					((EditTextPreference) preference).setText("1.2");
+					sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+							"1.2");
+				}
+
+			}
+
+			return true;
+		}
+	};
 
 	/**
 	 * A preference value change listener that updates the preference's summary

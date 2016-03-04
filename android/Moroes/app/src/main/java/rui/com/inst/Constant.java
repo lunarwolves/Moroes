@@ -17,4 +17,7 @@ public interface Constant {
 
 	double SCOPE_LATITUDE = 41.728767d;
 	double SCOPE_LONGTITUDE = 123.453747d;
+
+	String MANUAL_BEGIN_WORK_TIME = "Manual_begin_work_time";
+	String MANUAL_END_WORK_TIME = "Manual_end_work_time";
 }

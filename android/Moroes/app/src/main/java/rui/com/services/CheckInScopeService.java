@@ -12,6 +12,7 @@ import android.util.Log;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClientOption;
+import org.joda.time.Instant;
 import rui.com.db.LocationTimeDBHelper;
 import rui.com.inst.Constant;
 import rui.com.location.LocationService;
@@ -76,26 +77,28 @@ public class CheckInScopeService extends Service implements Constant {
 				//进入了目标范围
 				if (distance[0] <= DEFAULT_DETECT_DISTANCE) {
 					if (isInScope != IN_SCOPE_RIGHT_BEFORE_YES) {
-						isInScope = IN_SCOPE_RIGHT_BEFORE_YES;
 						lastInScopeTime = System.currentTimeMillis();
 
 						if (isInScope == IN_SCOPE_RIGHT_BEFORE_NO) {
 							//刚刚移动到范围内
 							recordMoveInScope();
 						}
+
+						isInScope = IN_SCOPE_RIGHT_BEFORE_YES;
 					}
 
 				} else {
 					if (isInScope != IN_SCOPE_RIGHT_BEFORE_NO) {
-						isInScope = IN_SCOPE_RIGHT_BEFORE_NO;
+
 						lastOutScopeTime = System.currentTimeMillis();
 
 						if (isInScope == IN_SCOPE_RIGHT_BEFORE_YES) {
 							//刚刚移动出范围
 							recordMoveOutScope();
 						}
-					}
 
+						isInScope = IN_SCOPE_RIGHT_BEFORE_NO;
+					}
 				}
 
 			}
@@ -104,23 +107,25 @@ public class CheckInScopeService extends Service implements Constant {
 	};
 
 	private void recordMoveInScope() {
-		writeToSQLite(0);
+		writeToSQLite(IN_SCOPE_RIGHT_BEFORE_YES);
 	}
 
 	private void recordMoveOutScope() {
-		writeToSQLite(1);
+		writeToSQLite(IN_SCOPE_RIGHT_BEFORE_NO);
 	}
 
 	private void writeToSQLite(int status) {
-		LocationTimeDBHelper helper = new LocationTimeDBHelper(this, DB_NAME, null, 1);
+		LocationTimeDBHelper helper = LocationTimeDBHelper.instance(getApplicationContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		db.beginTransaction();
 
 		ContentValues values = new ContentValues();
 		values.put("status", status);
+		values.put("changedTime", Instant.now().getMillis());
 		db.insert(TABLE_NAME_LOCATION, null, values);
 
 		db.setTransactionSuccessful();
+		db.endTransaction();
 		db.close();
 
 		((MoroesApplication) getApplication()).mVibrator.vibrate(1000L);
